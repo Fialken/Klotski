@@ -39,7 +39,7 @@ class Klostki:
 
 
     def move_up(self,piece): #mover as peças para cima
-        #state = Klostki(self.board,self.pieces, self.move_history)
+        
         p = piece
         if p>0:
             if p%2==0: #mover as verticais
@@ -84,7 +84,7 @@ class Klostki:
             return None   
             
     def move_down(self,piece):
-        #state = Klostki(self.board, self.pieces, self.move_history)
+
         p = piece
         if p>0:
             if p%2==0: #mover as verticais
@@ -129,7 +129,7 @@ class Klostki:
             return None 
 
     def move_left(self,piece): 
-        #state = Klostki(self.board, self.pieces, self.move_history)
+        
         p = piece
         if p>0:
             if p%2==0: 
@@ -173,7 +173,7 @@ class Klostki:
             return None
         
     def move_right(self,piece): 
-        #state = Klostki(self.board, self.pieces, self.move_history)
+       
         p = piece
         if p>0:
             if p%2==0: 
@@ -218,14 +218,20 @@ class Klostki:
 
 
     def mover(self,p,row,col):
+        #move_up
         if self.pieces[p][0]-1==row and self.pieces[p][1]==col:
             return self.move_up(p)
-        if self.pieces[p][0]+1==row and self.pieces[p][1]==col:
-            return self.move_down(p)
+        #move_left
         if self.pieces[p][0]==row and self.pieces[p][1]-1==col:
             return self.move_left(p)
-        if self.pieces[p][0]==row and self.pieces[p][1]+1==col:
+        
+        #move_down
+        if (self.pieces[p][0]+1==row and self.pieces[p][1]==col) or (self.pieces[p][0]+2==row and self.pieces[p][1]==col):
+            return self.move_down(p)
+        #move_right
+        if (self.pieces[p][0]==row and self.pieces[p][1]+1==col) or (self.pieces[p][0]==row and self.pieces[p][1]+2==col):
             return self.move_right(p)
+        return None
             
 
 
@@ -283,71 +289,6 @@ def dicionario(nivel_board):
                 pieces[piece_id] = (i, j) # pieces[2] = (1, 0)
     return pieces
 
-def bfs(problems):
-
-
-    queue = [problems]
-
-    while queue:
-        board = queue.pop(0)
-        
-        if board.test_goal():
-            resultados=board
-            break
-        
-        for child in board.children():
-            
-            queue.append(child)
-
-            
-    return resultados
-
-def h1(board):
-    mid_of_board=(len(board.board[0])//2)-1
-    if board.pieces[1]==(len(board.board)-2,mid_of_board):
-        return 0
-    else:
-        peças = []
-        for i in range(-2,0):
-            for j in range(mid_of_board,mid_of_board+2):
-                if board.board[i][j] != 0 and board.board[i][j] != 1 and board.board[i][j] not in peças:
-                    peças.append(board.board[i][j])
-        return len(peças)+1
-
-
-def h2(board):
-    # heuristic function 2
-    # returns the sum of manhattan distances from incorrect placed pieces to their correct place
-
-    mid_of_board=(len(board.board[0])//2)-1
-    row,col = board.pieces[1]
-    h2 = abs(len(board.board)-2-row) + abs(mid_of_board-col) +(h1(board)-1)
-
-    return h2
-
-
-def greedy_search(problem, heuristic):
-    # problem (NPuzzleState) - the initial state
-    # heuristic (function) - the heuristic function that takes a board (matrix), and returns an integer
-    setattr(Klostki, "__lt__", lambda self, other: heuristic(self) < heuristic(other))
-    states = [problem]
-    visited = set() # to not visit the same state twice
-    
-
-    while states:
-        current=heapq.heappop(states)
-        visited.add(current)
-
-        if current.test_goal():
-            # found the best solution
-            return current
-
-        for child in current.children():
-            if child not in visited:
-                heapq.heappush(states, child)
-
-    return None
-
 
 
 #//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -382,48 +323,25 @@ HORIZONTAL_BLOCK_IMAGE = pygame.image.load(os.path.join("Assets", "horizontal1.p
 FINAL_BLOCK_IMAGE = pygame.image.load(os.path.join("Assets", "final.png"))
 
 
-'''
-def draw_window(vertical,horizontal,individual,final):
-    WINDOW.fill(WHITE)
-    WINDOW.blit(INDIVIDUAL_BLOCK_IMAGE,(individual.x,individual.y))
-    WINDOW.blit(VERTICAL_BLOCK_IMAGE,(vertical.x,vertical.y))
-    WINDOW.blit(HORIZONTAL_BLOCK_IMAGE,(horizontal.x,horizontal.y))
-    WINDOW.blit(FINAL_BLOCK_IMAGE,(final.x,final.y))
-    pygame.display.update()
-
-def vertical_handle_movemente(keys_pressed,vertical):
-    if keys_pressed[pygame.K_a]: #LEFT
-        vertical.x -= VEL
-    if keys_pressed[pygame.K_d]: #LEFT
-        vertical.x += VEL
-    if keys_pressed[pygame.K_w]: #LEFT
-        vertical.y -= VEL
-    if keys_pressed[pygame.K_s]: #LEFT
-        vertical.y += VEL
-
-def final_handle_movemente(keys_pressed,final):
-    if keys_pressed[pygame.K_LEFT]: #LEFT
-        final.x -= VEL
-    if keys_pressed[pygame.K_RIGHT]: #LEFT
-        final.x += VEL
-    if keys_pressed[pygame.K_UP]: #LEFT
-        final.y -= VEL
-    if keys_pressed[pygame.K_DOWN]: #LEFT
-        final.y += VEL
-'''
-
 def get_position(nivel,pos):
     x,y=pos[0],pos[1]
+    if (x-margem_x) // 100>len(nivel.board[0])-1 or (y-margem_y) // 100 > len(nivel.board)-1:
+        return 999,999
     row= min((y-margem_y) // 100,len(nivel.board)-1)
     col= min((x-margem_x) // 100,len(nivel.board[0])-1)
     if row < 0 or col <0:
-        return 0,0
+        return 999,999
     return row, col # x, y
+
+
+
 
 margem_y=100
 if len(nivel.board[0])==4: #controlo do x
     margem_x=200
 else: margem_x=100
+
+
 
 def desenhar_problema(self):       
     for p in self.pieces:
@@ -442,6 +360,8 @@ def desenhar_problema(self):
             piece =pygame.Rect(100*self.pieces[p][1]+margem_x,100*self.pieces[p][0]+margem_y,BLOCK_WIDTH,BLOCK_HEIGHT)
             WINDOW.blit(INDIVIDUAL_BLOCK_IMAGE,(piece.x,piece.y))
 
+
+
 def desenhar_moves(self): #desenha onde são as possiveis jogadas
     p=self.escolhida
     if p:
@@ -449,27 +369,31 @@ def desenhar_moves(self): #desenha onde são as possiveis jogadas
             if func==self.move_up:
                 pygame.draw.circle(WINDOW, RED, (100*self.pieces[p][1]+margem_x+50, 100*self.pieces[p][0]+margem_y-25), 20)
 
+            if func==self.move_left:
+                pygame.draw.circle(WINDOW, RED, (100*self.pieces[p][1]+margem_x-25, 100*self.pieces[p][0]+margem_y+50), 20)
+
             if func==self.move_right:
                 if p==1 or (p>0 and p%2!=0):
                     pygame.draw.circle(WINDOW, RED, (100*self.pieces[p][1]+margem_x+225, 100*self.pieces[p][0]+margem_y+50), 20)
                 else: pygame.draw.circle(WINDOW, RED, (100*self.pieces[p][1]+margem_x+125, 100*self.pieces[p][0]+margem_y+50), 20)
+
             if func==self.move_down:
                 if p==1 or (p>0 and p%2==0):
                     pygame.draw.circle(WINDOW, RED, (100*self.pieces[p][1]+margem_x+50, 100*self.pieces[p][0]+margem_y+225), 20)
                     
-                else:
-                    pygame.draw.circle(WINDOW, RED, (100*self.pieces[p][1]+margem_x+50, 100*self.pieces[p][0]+margem_y+75), 20)
+                else: pygame.draw.circle(WINDOW, RED, (100*self.pieces[p][1]+margem_x+50, 100*self.pieces[p][0]+margem_y+125), 20)
                 
-            if func==self.move_left:
-                pygame.draw.circle(WINDOW, RED, (100*self.pieces[p][1]+margem_x-25, 100*self.pieces[p][0]+margem_y+50), 20)
+            
 
 def piece_chosen(self,row,col):
     piece=self.board[row][col]
 
     if self.escolhida:
         p=self.escolhida
-        self.mover(p,row,col)
-        self.escolhida= None
+        if self.mover(p,row,col):
+            self.mover(p,row,col)
+            self.escolhida= None
+            row,col=None,None
 
 
 
@@ -478,11 +402,10 @@ def piece_chosen(self,row,col):
         self.possible_moves=[]
         functions = [self.move_up, self.move_down, self.move_left, self.move_right]
         for func in functions:
-            move = func(piece) 
+            move = deepcopy(func(piece))
             if move:
                 self.possible_moves.append(func)
-        return True
-    return False
+
 
 
 
@@ -504,7 +427,7 @@ def main(game):
 
         if game.test_goal():
             WINDOW.blit(WINNER,(200,600))
-        
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -513,6 +436,8 @@ def main(game):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 row,col=get_position(game,pos)
+                if row==999 or col==999:#caso nao seja selecionada um espaço do tabuleiro
+                    break
                 piece_chosen(game,row,col)
             
 
