@@ -4,10 +4,13 @@ from copy import deepcopy
 import heapq
 
 class Klostki:
-    def __init__(self,board,pieces,move_history=[]):
+    def __init__(self,board,pieces,move_history=[],escolhida=None,possible_moves=[]):
         self.board = deepcopy(board)
         self.pieces=deepcopy(pieces)
         self.move_history = [] + move_history + [self.board]
+        #para pygame
+        self.escolhida= escolhida
+        self.possible_moves= possible_moves
 
     def __str__(self):
         return convert_board_to_str(self.board)
