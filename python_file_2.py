@@ -91,7 +91,7 @@ class Klostki:
         p = piece
         if p>0:
             if p%2==0: #mover as verticais
-                if self.board[min(self.pieces[p][0]+2,len(self.board[1])-1)][self.pieces[p][1]]==0:
+                if self.board[min(self.pieces[p][0]+2,len(self.board)-1)][self.pieces[p][1]]==0:
                     
                     self.board[self.pieces[p][0]+2][self.pieces[p][1]]=p #atualiza a board
                     self.board[self.pieces[p][0]+1][self.pieces[p][1]]=p #atualiza a board

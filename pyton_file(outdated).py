@@ -7,7 +7,6 @@ class Klostki:
     def __init__(self,board,pieces,move_history=[]):
         self.board = deepcopy(board)
         self.pieces=deepcopy(pieces)
-
         self.move_history = [] + move_history + [self.board]
 
     def __str__(self):
@@ -20,207 +19,190 @@ class Klostki:
 
         children = []
         for func in functions:
-            #print(func)##
             for piece in self.pieces:
-                #print(piece)##
-                child = deepcopy(func(piece))
-                if child: #if type(child) != str:
-                    
-
+                child = func(piece)
+                if child:                    
                     children.append(child)
+
         return children
 
 
 #value of board;
-#if value%2 == 0 and value < 10,double piece vertical
-#if value%2 != 0 and value != 1 < 10, double piece horizontaly
+#if value%2 == 0 ,double piece vertical
+#if value%2 != 0 , double piece horizontaly
 #if value < 0, sigle piece
 #if value == 1, big piece *peça objetivo*
 #if value == 0, free space
 
 
     def move_up(self,piece): #mover as peças para cima
-        #state = Klostki(self.board,self.pieces, self.move_history)
+        state = Klostki(self.board,self.pieces, self.move_history)
         p = piece
         if p>0:
             if p%2==0: #mover as verticais
-                if self.board[max(self.pieces[p][0]-1,0)][self.pieces[p][1]]==0:
-                    self.board[self.pieces[p][0]-1][self.pieces[p][1]]=p #atualiza a board
-                    self.board[self.pieces[p][0]][self.pieces[p][1]]=p #atualiza a board
-                    self.board[self.pieces[p][0]+1][self.pieces[p][1]]=0 #atualiza a board
-                    self.pieces[p]=(self.pieces[p][0]-1,self.pieces[p][1]) #atualiza a posição do topo esquerdo da peça
-                    return self
-                else:
-                    #print("Nao há espaço livre em cima")
+                if state.board[max(state.pieces[p][0]-1,0)][state.pieces[p][1]]==0:
+                    state.board[state.pieces[p][0]-1][state.pieces[p][1]]=p #atualiza a board
+                    state.board[state.pieces[p][0]][state.pieces[p][1]]=p #atualiza a board
+                    state.board[state.pieces[p][0]+1][state.pieces[p][1]]=0 #atualiza a board
+                    state.pieces[p]=(state.pieces[p][0]-1,state.pieces[p][1]) #atualiza a posição do topo esquerdo da peça
+                    return state
+                else:                    
                     return None   
             elif p != 1:
-                if self.board[max(self.pieces[p][0]-1,0)][self.pieces[p][1]]==0 and self.board[max(self.pieces[p][0]-1,0)][self.pieces[p][1]+1]==0:
-                    self.board[self.pieces[p][0]-1][self.pieces[p][1]]=p
-                    self.board[self.pieces[p][0]-1][self.pieces[p][1]+1]=p
-                    self.board[self.pieces[p][0]][self.pieces[p][1]]=0
-                    self.board[self.pieces[p][0]][self.pieces[p][1]+1]=0
-                    self.pieces[p]=(self.pieces[p][0]-1,self.pieces[p][1])
-                    return self
-                else:
-                    #print("Nao há espaço livre em cima")
+                if state.board[max(state.pieces[p][0]-1,0)][state.pieces[p][1]]==0 and state.board[max(state.pieces[p][0]-1,0)][state.pieces[p][1]+1]==0:
+                    state.board[state.pieces[p][0]-1][state.pieces[p][1]]=p
+                    state.board[state.pieces[p][0]-1][state.pieces[p][1]+1]=p
+                    state.board[state.pieces[p][0]][state.pieces[p][1]]=0
+                    state.board[state.pieces[p][0]][state.pieces[p][1]+1]=0
+                    state.pieces[p]=(state.pieces[p][0]-1,state.pieces[p][1])
+                    return state
+                else:                    
                     return None   
-            elif self.board[max(self.pieces[p][0]-1,0)][self.pieces[p][1]]==0 and self.board[max(self.pieces[p][0]-1,0)][self.pieces[p][1]+1]==0:
-                self.board[self.pieces[p][0]-1][self.pieces[p][1]]=p
-                self.board[self.pieces[p][0]-1][self.pieces[p][1]+1]=p
-                self.board[self.pieces[p][0]+1][self.pieces[p][1]]=0
-                self.board[self.pieces[p][0]+1][self.pieces[p][1]+1]=0
-                self.pieces[p]=(self.pieces[p][0]-1,self.pieces[p][1])
-                return self
-            else:
-                #print("Nao há espaço livre em cima")
+            elif state.board[max(state.pieces[p][0]-1,0)][state.pieces[p][1]]==0 and state.board[max(state.pieces[p][0]-1,0)][state.pieces[p][1]+1]==0:
+                state.board[state.pieces[p][0]-1][state.pieces[p][1]]=p
+                state.board[state.pieces[p][0]-1][state.pieces[p][1]+1]=p
+                state.board[state.pieces[p][0]+1][state.pieces[p][1]]=0
+                state.board[state.pieces[p][0]+1][state.pieces[p][1]+1]=0
+                state.pieces[p]=(state.pieces[p][0]-1,state.pieces[p][1])
+                return state
+            else:                
                 return None                
             
-        elif self.board[max(self.pieces[p][0]-1,0)][self.pieces[p][1]]==0:
-            self.board[self.pieces[p][0]][self.pieces[p][1]]=0
-            self.board[self.pieces[p][0]-1][self.pieces[p][1]]=p
-            self.pieces[p]=(self.pieces[p][0]-1,self.pieces[p][1])
-            return self
-        else:
-            #print("Nao há espaço livre em cima")
+        elif state.board[max(state.pieces[p][0]-1,0)][state.pieces[p][1]]==0:
+            state.board[state.pieces[p][0]][state.pieces[p][1]]=0
+            state.board[state.pieces[p][0]-1][state.pieces[p][1]]=p
+            state.pieces[p]=(state.pieces[p][0]-1,state.pieces[p][1])
+            return state
+        else:            
             return None   
             
     def move_down(self,piece):
-        #state = Klostki(self.board, self.pieces, self.move_history)
+        state = Klostki(self.board, self.pieces, self.move_history)
         p = piece
         if p>0:
             if p%2==0: #mover as verticais
-                if self.board[min(self.pieces[p][0]+2,len(self.board[1])-1)][self.pieces[p][1]]==0:
-                    self.board[self.pieces[p][0]+2][self.pieces[p][1]]=p #atualiza a board
-                    self.board[self.pieces[p][0]+1][self.pieces[p][1]]=p #atualiza a board
-                    self.board[self.pieces[p][0]][self.pieces[p][1]]=0 #atualiza a board
-                    self.pieces[p]=(self.pieces[p][0]+1,self.pieces[p][1]) #atualiza a posição do topo esquerdo da peça
-                    return self
-                else:
-                    #print("Nao há espaço livre em baixo")
+                if state.board[min(state.pieces[p][0]+2,len(state.board)-1)][state.pieces[p][1]]==0:
+                    state.board[state.pieces[p][0]+2][state.pieces[p][1]]=p #atualiza a board
+                    state.board[state.pieces[p][0]+1][state.pieces[p][1]]=p #atualiza a board
+                    state.board[state.pieces[p][0]][state.pieces[p][1]]=0 #atualiza a board
+                    state.pieces[p]=(state.pieces[p][0]+1,state.pieces[p][1]) #atualiza a posição do topo esquerdo da peça
+                    return state
+                else:                   
                     return None 
             elif p != 1: #move horizontais 
-                if self.board[min(self.pieces[p][0]+1,len(self.board)-1)][self.pieces[p][1]]==0 and self.board[min(self.pieces[p][0]+1,len(self.board)-1)][self.pieces[p][1]+1]==0:
-                    self.board[self.pieces[p][0]+1][self.pieces[p][1]]=p
-                    self.board[self.pieces[p][0]+1][self.pieces[p][1]+1]=p
-                    self.board[self.pieces[p][0]][self.pieces[p][1]]=0
-                    self.board[self.pieces[p][0]][self.pieces[p][1]+1]=0
-                    self.pieces[p]=(self.pieces[p][0]+1,self.pieces[p][1])
-                    return self
-                else:
-                    #print("Nao há espaço livre em baixo")
+                if state.board[min(state.pieces[p][0]+1,len(state.board)-1)][state.pieces[p][1]]==0 and state.board[min(state.pieces[p][0]+1,len(state.board)-1)][state.pieces[p][1]+1]==0:
+                    state.board[state.pieces[p][0]+1][state.pieces[p][1]]=p
+                    state.board[state.pieces[p][0]+1][state.pieces[p][1]+1]=p
+                    state.board[state.pieces[p][0]][state.pieces[p][1]]=0
+                    state.board[state.pieces[p][0]][state.pieces[p][1]+1]=0
+                    state.pieces[p]=(state.pieces[p][0]+1,state.pieces[p][1])
+                    return state
+                else:                    
                     return None 
-            elif self.board[min(self.pieces[p][0]+2,len(self.board)-1)][self.pieces[p][1]]==0 and self.board[min(self.pieces[p][0]+2,len(self.board)-1)][self.pieces[p][1]+1]==0:
-                self.board[self.pieces[p][0]][self.pieces[p][1]]=0
-                self.board[self.pieces[p][0]][self.pieces[p][1]+1]=0
-                self.board[self.pieces[p][0]+2][self.pieces[p][1]]=p
-                self.board[self.pieces[p][0]+2][self.pieces[p][1]+1]=p
-                self.pieces[p]=(self.pieces[p][0]+1,self.pieces[p][1])
-                return self
-            else:
-                #print("Nao há espaço livre em baixo")
+            elif state.board[min(state.pieces[p][0]+2,len(state.board)-1)][state.pieces[p][1]]==0 and state.board[min(state.pieces[p][0]+2,len(state.board)-1)][state.pieces[p][1]+1]==0:
+                state.board[state.pieces[p][0]][state.pieces[p][1]]=0
+                state.board[state.pieces[p][0]][state.pieces[p][1]+1]=0
+                state.board[state.pieces[p][0]+2][state.pieces[p][1]]=p
+                state.board[state.pieces[p][0]+2][state.pieces[p][1]+1]=p
+                state.pieces[p]=(state.pieces[p][0]+1,state.pieces[p][1])
+                return state
+            else:                
                 return None 
             
-        elif self.board[min(self.pieces[p][0]+1,len(self.board)-1)][self.pieces[p][1]]==0:
-            self.board[self.pieces[p][0]][self.pieces[p][1]]=0
-            self.board[self.pieces[p][0]+1][self.pieces[p][1]]=p
-            self.pieces[p]=(self.pieces[p][0]+1,self.pieces[p][1])
-            return self
-        else:
-            #print("Nao há espaço livre em baixo")
+        elif state.board[min(state.pieces[p][0]+1,len(state.board)-1)][state.pieces[p][1]]==0:
+            state.board[state.pieces[p][0]][state.pieces[p][1]]=0
+            state.board[state.pieces[p][0]+1][state.pieces[p][1]]=p
+            state.pieces[p]=(state.pieces[p][0]+1,state.pieces[p][1])
+            return state
+        else:            
             return None 
 
     def move_left(self,piece): 
-        #state = Klostki(self.board, self.pieces, self.move_history)
+        state = Klostki(self.board, self.pieces, self.move_history)
         p = piece
         if p>0:
             if p%2==0: 
-                if self.board[self.pieces[p][0]][max(self.pieces[p][1]-1,0)]==0 and self.board[self.pieces[p][0]+1][max(self.pieces[p][1]-1,0)]==0:
-                    self.board[self.pieces[p][0]][self.pieces[p][1]-1]=p
-                    self.board[self.pieces[p][0]+1][self.pieces[p][1]-1]=p
-                    self.board[self.pieces[p][0]][self.pieces[p][1]]=0
-                    self.board[self.pieces[p][0]+1][self.pieces[p][1]]=0
-                    self.pieces[p]=(self.pieces[p][0],self.pieces[p][1]-1)
-                    return self
-                
-                else: 
-                    #print("Não é há espaço livre à esquerda")
+                if state.board[state.pieces[p][0]][max(state.pieces[p][1]-1,0)]==0 and state.board[state.pieces[p][0]+1][max(state.pieces[p][1]-1,0)]==0:
+                    state.board[state.pieces[p][0]][state.pieces[p][1]-1]=p
+                    state.board[state.pieces[p][0]+1][state.pieces[p][1]-1]=p
+                    state.board[state.pieces[p][0]][state.pieces[p][1]]=0
+                    state.board[state.pieces[p][0]+1][state.pieces[p][1]]=0
+                    state.pieces[p]=(state.pieces[p][0],state.pieces[p][1]-1)
+                    return state
+                else:                    
                     return None
             elif p != 1:
-                if self.board[self.pieces[p][0]][max(self.pieces[p][1]-1,0)]==0:
-                    self.board[self.pieces[p][0]][self.pieces[p][1]-1]=p
-                    self.board[self.pieces[p][0]][self.pieces[p][1]+1]=0
-                    self.pieces[p]=(self.pieces[p][0],self.pieces[p][1]-1)
-                    return self
-                else:
-                    #print("Não é há espaço livre à esquerda")
+                if state.board[state.pieces[p][0]][max(state.pieces[p][1]-1,0)]==0:
+                    state.board[state.pieces[p][0]][state.pieces[p][1]-1]=p
+                    state.board[state.pieces[p][0]][state.pieces[p][1]+1]=0
+                    state.pieces[p]=(state.pieces[p][0],state.pieces[p][1]-1)
+                    return state
+                else:                    
                     return None
-            elif self.board[self.pieces[p][0]][max(self.pieces[p][1]-1,0)]==0 and self.board[self.pieces[p][0]+1][max(self.pieces[p][1]-1,0)]==0:
-                self.board[self.pieces[p][0]][self.pieces[p][1]-1]=p
-                self.board[self.pieces[p][0]+1][self.pieces[p][1]-1]=p
-                self.board[self.pieces[p][0]][self.pieces[p][1]+1]=0
-                self.board[self.pieces[p][0]+1][self.pieces[p][1]+1]=0
-                self.pieces[p]=(self.pieces[p][0],self.pieces[p][1]-1)
-                return self
-            else:
-                #print("Não é há espaço livre à esquerda")
+            elif state.board[state.pieces[p][0]][max(state.pieces[p][1]-1,0)]==0 and state.board[state.pieces[p][0]+1][max(state.pieces[p][1]-1,0)]==0:
+                state.board[state.pieces[p][0]][state.pieces[p][1]-1]=p
+                state.board[state.pieces[p][0]+1][state.pieces[p][1]-1]=p
+                state.board[state.pieces[p][0]][state.pieces[p][1]+1]=0
+                state.board[state.pieces[p][0]+1][state.pieces[p][1]+1]=0
+                state.pieces[p]=(state.pieces[p][0],state.pieces[p][1]-1)
+                return state
+            else:                
                 return None
-        elif self.board[self.pieces[p][0]][max(self.pieces[p][1]-1,0)]==0:
-            self.board[self.pieces[p][0]][self.pieces[p][1]-1]=p
-            self.board[self.pieces[p][0]][self.pieces[p][1]]=0
-            self.pieces[p]=(self.pieces[p][0],self.pieces[p][1]-1)
-            return self
-        else:
-            #print("Não é há espaço livre à esquerda")
+        elif state.board[state.pieces[p][0]][max(state.pieces[p][1]-1,0)]==0:
+            state.board[state.pieces[p][0]][state.pieces[p][1]-1]=p
+            state.board[state.pieces[p][0]][state.pieces[p][1]]=0
+            state.pieces[p]=(state.pieces[p][0],state.pieces[p][1]-1)
+            return state
+        else:           
             return None
         
     def move_right(self,piece): 
-        #state = Klostki(self.board, self.pieces, self.move_history)
+        state = Klostki(self.board, self.pieces, self.move_history)
         p = piece
         if p>0:
             if p%2==0: 
-                if self.board[self.pieces[p][0]][min(self.pieces[p][1]+1,len(self.board[1])-1)]==0 and self.board[self.pieces[p][0]+1][min(self.pieces[p][1]+1,len(self.board[1])-1)]==0:
-                    self.board[self.pieces[p][0]][self.pieces[p][1]+1]=p
-                    self.board[self.pieces[p][0]+1][self.pieces[p][1]+1]=p
-                    self.board[self.pieces[p][0]][self.pieces[p][1]]=0
-                    self.board[self.pieces[p][0]+1][self.pieces[p][1]]=0
-                    self.pieces[p]=(self.pieces[p][0],self.pieces[p][1]+1)
-                    return self
+                if state.board[state.pieces[p][0]][min(state.pieces[p][1]+1,len(state.board[1])-1)]==0 and state.board[state.pieces[p][0]+1][min(state.pieces[p][1]+1,len(state.board[1])-1)]==0:
+                    state.board[state.pieces[p][0]][state.pieces[p][1]+1]=p
+                    state.board[state.pieces[p][0]+1][state.pieces[p][1]+1]=p
+                    state.board[state.pieces[p][0]][state.pieces[p][1]]=0
+                    state.board[state.pieces[p][0]+1][state.pieces[p][1]]=0
+                    state.pieces[p]=(state.pieces[p][0],state.pieces[p][1]+1)
+                    return state
                 
                 else: 
                     #print("Não é há espaço livre à direita")
                     return None
             elif p != 1:
-                if self.board[self.pieces[p][0]][min(self.pieces[p][1]+2,len(self.board[1])-1)]==0:
-                    self.board[self.pieces[p][0]][self.pieces[p][1]+2]=p
-                    self.board[self.pieces[p][0]][self.pieces[p][1]]=0
-                    self.pieces[p]=(self.pieces[p][0],self.pieces[p][1]+1)
-                    return self
+                if state.board[state.pieces[p][0]][min(state.pieces[p][1]+2,len(state.board[1])-1)]==0:
+                    state.board[state.pieces[p][0]][state.pieces[p][1]+2]=p
+                    state.board[state.pieces[p][0]][state.pieces[p][1]]=0
+                    state.pieces[p]=(state.pieces[p][0],state.pieces[p][1]+1)
+                    return state
                 else:
                     #print("Não é há espaço livre à direita")
                     return None
-            elif self.board[self.pieces[p][0]][min(self.pieces[p][1]+2,len(self.board[1])-1)]==0 and self.board[self.pieces[p][0]+1][min(self.pieces[p][1]+2,len(self.board[1])-1)]==0:
-                self.board[self.pieces[p][0]][self.pieces[p][1]+2]=p
-                self.board[self.pieces[p][0]+1][self.pieces[p][1]+2]=p
-                self.board[self.pieces[p][0]][self.pieces[p][1]]=0
-                self.board[self.pieces[p][0]+1][self.pieces[p][1]]=0
-                self.pieces[p]=(self.pieces[p][0],self.pieces[p][1]+1)
-                return self
+            elif state.board[state.pieces[p][0]][min(state.pieces[p][1]+2,len(state.board[1])-1)]==0 and state.board[state.pieces[p][0]+1][min(state.pieces[p][1]+2,len(state.board[1])-1)]==0:
+                state.board[state.pieces[p][0]][state.pieces[p][1]+2]=p
+                state.board[state.pieces[p][0]+1][state.pieces[p][1]+2]=p
+                state.board[state.pieces[p][0]][state.pieces[p][1]]=0
+                state.board[state.pieces[p][0]+1][state.pieces[p][1]]=0
+                state.pieces[p]=(state.pieces[p][0],state.pieces[p][1]+1)
+                return state
             else:
                 #print("Não é há espaço livre à direita")
                 return None
-        elif self.board[self.pieces[p][0]][min(self.pieces[p][1]+1,len(self.board[1])-1)]==0: 
-            self.board[self.pieces[p][0]][self.pieces[p][1]+1]=p
-            self.board[self.pieces[p][0]][self.pieces[p][1]]=0
-            self.pieces[p]=(self.pieces[p][0],self.pieces[p][1]+1)
-            return self
+        elif state.board[state.pieces[p][0]][min(state.pieces[p][1]+1,len(state.board[1])-1)]==0: 
+            state.board[state.pieces[p][0]][state.pieces[p][1]+1]=p
+            state.board[state.pieces[p][0]][state.pieces[p][1]]=0
+            state.pieces[p]=(state.pieces[p][0],state.pieces[p][1]+1)
+            return state
         else:
             #print("Não é há espaço livre à direita")
             return None
 
-        
-            
+  
     def test_goal(self):
-        # checks if the board is complete
+        
         mid_of_board=len(self.board[0])//2-1 #como len(self.board[0]) é par irá ter o valor da posição da esquerda por isso depois +1 para verificar
 
         if 1==self.board[-1][mid_of_board] and self.board[-1][mid_of_board+1]==1: #basta analisar se as duas coordenadas de baixo correspondem como é um quadrado 2x2
@@ -242,9 +224,8 @@ def convert_board_to_str(board):
     return board_str
 
 def print_sequence(resultados):
-    #for i in range(len(resultados)):
+    
     print("Steps:", len(resultados.move_history) - 1)
-    # prints the sequence of states
     for move in resultados.move_history:
         print(convert_board_to_str(move))
         print()
@@ -255,10 +236,10 @@ def problems(numero): #adicionar o numero do board para resolver/jogar
                     [2,0,0,-4],
                     [2,-1,-2,-3]],
                    [[0,3,3,0],
-                [0,0,1,1],
-                [0,0,1,1],
-                [0,4,0,0],
-                [0,4,-2,0]]]
+                    [0,0,1,1],
+                    [0,0,1,1],
+                    [0,4,0,0],
+                    [0,4,-2,0]]]
     
     indicador = dicionario(niveis_boards[numero])
     return Klostki(niveis_boards[numero],indicador)
@@ -325,8 +306,7 @@ def greedy_search(problem, heuristic):
     while states:
         current=heapq.heappop(states)
         visited.add(current)
-        print('------current------')
-        print(current)
+ 
 
         if current.test_goal():
             return current
@@ -334,26 +314,6 @@ def greedy_search(problem, heuristic):
         for child in current.children():
             if child not in visited:
                 visited.add(child)
-                print('-------child--------')
-                print(child)
                 heapq.heappush(states, child)
 
     return None
-
-
-
-#print('BFS')
-#print_sequence(bfs(problems(1)))
-print(problems(1))
-print('---------resolution---------')
-print('H1')
-print_sequence(greedy_search(problems(1),h1))
-
-
-
-print('H2')
-
-#print_sequence(greedy_search(problems(1),h2))
-
-print_sequence(greedy_search(problems(0),h2))
-
