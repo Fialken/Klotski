@@ -1,3 +1,4 @@
+PT-PT
 Esta pasta contem este ficheiro, uma pasta "programas" e um pdf que foi utilizado na apresentação e ao qual pode aceder para entender a linha de reaciocinio por detrás do desenvolvimento dos nossos programas.
 
 Na pasta "Programas" estão os dois programas que queremos entregar e uma pasta "Assests" que contem PNGs utilizados por um dos programas.
