@@ -1,5 +1,5 @@
 PT-PT
-Programa desenvolvido no ambito de Elementos de Inteligencia Artificial - FCUP CC1023
+Programa desenvolvido no âmbito de Elementos de Inteligencia Artificial - FCUP CC1023
 Foi implementado o jogo Klotski em pygame e usado algoritmos de pesquisa para ajudar/resolver os problemas
 Foi implementado no software: BFS, Greedy e A* sendo que apenas usa A* na resolução dos problemas
 
